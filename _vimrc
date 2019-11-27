@@ -1,12 +1,3 @@
-call plug#begin('~/.vim/plugged')
-
-" 末尾の全角と半角の空白文字をハイライト
-Plug 'bronson/vim-trailing-whitespace'
-
-Plug 'scrooloose/nerdtree'
-
-call plug#end()
-
 " コマンドでディレクトリツリー開く
 nnoremap <silent><C-e> :NERDTreeToggle<CR>
 
@@ -82,6 +73,13 @@ endif
 
 " Required:
 call plug#begin(expand('~/.vim/plugged'))
+
+
+Plug 'gabrielelana/vim-markdown'
+" 末尾の全角と半角の空白文字をハイライト
+Plug 'bronson/vim-trailing-whitespace'
+
+Plug 'jiangmiao/auto-pairs'
 
 "*****************************************************************************
 "" Plug install packages
