@@ -1,32 +1,14 @@
 call plug#begin('~/.vim/plugged')
 
-" ファイルオープンを便利に
-Plug 'Shougo/unite.vim'
-" Unite.vimで最近使ったファイルを表示できるようにする
-Plug 'Shougo/neomru.vim'
-" ...省略
+" 末尾の全角と半角の空白文字をハイライト
+Plug 'bronson/vim-trailing-whitespace'
+
+Plug 'scrooloose/nerdtree'
 
 call plug#end()
 
-" 入力モードで開始する
-let g:unite_enable_start_insert=1
-" バッファ一覧
-noremap <C-P> :Unite buffer<CR>
-" ファイル一覧
-noremap <C-N> :Unite -buffer-name=file file<CR>
-" 最近使ったファイルの一覧
-noremap <C-Z> :Unite file_mru<CR>
-" sourcesを「今開いているファイルのディレクトリ」とする
-noremap :uff :<C-u>UniteWithBufferDir file -buffer-name=file<CR>
-" ウィンドウを分割して開く
-au FileType unite nnoremap <silent> <buffer> <expr> <C-J> unite#do_action('split')
-au FileType unite inoremap <silent> <buffer> <expr> <C-J> unite#do_action('split')
-" ウィンドウを縦に分割して開く
-au FileType unite nnoremap <silent> <buffer> <expr> <C-K> unite#do_action('vsplit')
-au FileType unite inoremap <silent> <buffer> <expr> <C-K> unite#do_action('vsplit')
-" ESCキーを2回押すと終了する
-au FileType unite nnoremap <silent> <buffer> <ESC><ESC> :q<CR>
-au FileType unite inoremap <silent> <buffer> <ESC><ESC> <ESC>:q<CR>
+" コマンドでディレクトリツリー開く
+nnoremap <silent><C-e> :NERDTreeToggle<CR>
 
 syntax on
 colorscheme hybrid
@@ -52,6 +34,31 @@ set number
 
 " vim-bootstrap
 
+"マウスの有効化
+if has('mouse')
+    set mouse=a
+    if has('mouse_sgr')
+        set ttymouse=sgr
+    elseif v:version > 703 || v:version is 703 && has('patch632')
+        set ttymouse=sgr
+    else
+        set ttymouse=xterm2
+    endif
+endif
+
+"クリップボードからペーストする時だけインデントしない
+if &term =~ "xterm"
+    let &t_SI .= "\e[?2004h"
+    let &t_EI .= "\e[?2004l"
+    let &pastetoggle = "\e[201~"
+
+    function XTermPasteBegin(ret)
+        set paste
+        return a:ret
+    endfunction
+
+    inoremap <special> <expr> <Esc>[200~ XTermPasteBegin("")
+endif
 "*****************************************************************************
 "" Vim-PLug core
 "*****************************************************************************
@@ -174,7 +181,6 @@ set backspace=indent,eol,start
 set tabstop=4
 set softtabstop=0
 set shiftwidth=4
-set expandtab
 
 "" Map leader to ,
 let mapleader=','
@@ -208,7 +214,11 @@ let g:session_command_aliases = 1
 syntax on
 set ruler
 set number
-
+" カーソルのある行をハイライト
+set cursorline
+" 括弧の対応関係を一瞬表示
+set showmatch
+    source $VIMRUNTIME/macros/matchit.vim
 let no_buffers_menu=1
 
 set mousemodel=popup
