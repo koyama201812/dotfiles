@@ -1,3 +1,30 @@
+"*****************************************************************************
+" spell日本語対応
+"*****************************************************************************
+set spelllang=en,cjk
+fun! s:SpellConf()
+  redir! => syntax
+  silent syntax
+  redir END
+
+  set spell
+
+  if syntax =~? '/<comment\>'
+    syntax spell default
+    syntax match SpellMaybeCode /\<\h\l*[_A-Z]\h\{-}\>/ contains=@NoSpell transparent containedin=Comment contained
+  else
+    syntax spell toplevel
+    syntax match SpellMaybeCode /\<\h\l*[_A-Z]\h\{-}\>/ contains=@NoSpell transparent
+  endif
+
+  syntax cluster Spell add=SpellNotAscii,SpellMaybeCode
+endfunc
+
+augroup spell_check
+  autocmd!
+  autocmd BufReadPost,BufNewFile,Syntax * call s:SpellConf()
+augroup END
+
 " コマンドでディレクトリツリー開く
 nnoremap <silent><C-e> :NERDTreeToggle<CR>
 
@@ -76,8 +103,6 @@ call plug#begin(expand('~/.vim/plugged'))
 
 
 Plug 'gabrielelana/vim-markdown'
-" 末尾の全角と半角の空白文字をハイライト
-Plug 'bronson/vim-trailing-whitespace'
 
 Plug 'jiangmiao/auto-pairs'
 
