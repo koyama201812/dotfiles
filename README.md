@@ -14,3 +14,21 @@ $ curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
 ```
 
 - vim-plug(https://github.com/junegunn/vim-plug)
+
+## プラグイン(32)
+
+1. NERDTree
+    - ディレクトリツリーを表示する
+    - 開く：`Ctrl + E`
+
+2. Commentary
+    - コメントアウト：`gcc`
+
+3. Fugitive
+    - Gitコマンドを簡単に実行
+    - :Git add `:Gwrite`
+    - :Git checkout `:Gread`
+    - :Git rm `Gremove`
+
+4. Auto-pairs
+    - 括弧など入れると自動で閉じ括弧出す
